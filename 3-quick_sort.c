@@ -1,0 +1,71 @@
+#include "sort.h"
+
+/**
+ * swap_int - swaps two integers
+ */
+void swap_int(int *a, int *b)
+{
+	int tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+/**
+ * lomuto_partition - partitions array using Lomuto scheme
+ */
+int lomuto_partition(int *array, int size, int left, int right)
+{
+	int pivot = array[right];
+	int i = left - 1;
+	int j;
+
+	for (j = left; j < right; j++)
+	{
+		if (array[j] <= pivot)
+		{
+			i++;
+			if (i != j)
+			{
+				swap_int(&array[i], &array[j]);
+				print_array(array, size);
+			}
+		}
+	}
+
+	if (i + 1 != right)
+	{
+		swap_int(&array[i + 1], &array[right]);
+		print_array(array, size);
+	}
+
+	return (i + 1);
+}
+
+/**
+ * quick_sort_recursive - recursive quicksort
+ */
+void quick_sort_recursive(int *array, int size, int left, int right)
+{
+	int pivot;
+
+	if (left < right)
+	{
+		pivot = lomuto_partition(array, size, left, right);
+
+		quick_sort_recursive(array, size, left, pivot - 1);
+		quick_sort_recursive(array, size, pivot + 1, right);
+	}
+}
+
+/**
+ * quick_sort - sorts array using quick sort
+ * @array: array to sort
+ * @size: size of array
+ */
+void quick_sort(int *array, size_t size)
+{
+	if (!array || size < 2)
+		return;
+
+	quick_sort_recursive(array, size, 0, size - 1);
+}
